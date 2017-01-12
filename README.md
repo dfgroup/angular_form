@@ -1,2 +1,2 @@
-# angular_form
+# Angular form
 Drupal form based on angular
