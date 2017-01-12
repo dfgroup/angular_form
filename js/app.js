@@ -1,7 +1,7 @@
 app = angular.module('ucalApp',[]);
 
 /** app.constant('form_instance','http://form.ucal.edu.pe/webservice'); */
-app.constant('form_instance','http://online.ucal.edu.pe/ucal/webservice/Service1.svc/Insertar');
+app.constant('form_instance','SERVICE');
 
 
 app.controller("ucalCtrl", function ($scope, $http, Contact) {
