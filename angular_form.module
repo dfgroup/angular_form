@@ -1,0 +1,309 @@
+<?php
+
+/**
+ * Implementation of hook_block_info();
+ */
+function angular_form_block_info(){
+  $blocks['angular_form'] = array(
+    'info' => t('Angular form'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implementation of hook_block_view();
+*/
+function angular_form_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'angular_form':
+      $uri = drupal_get_path_alias();
+	  $uri = explode('/', $uri);
+	  $hideValue = 	FALSE;
+	  if ($uri[0] == 'educacion-continua') {
+		$hideValue = TRUE;
+	  }
+      $block['content'] = theme('angular', array('hide_value' => $hideValue));
+      break;
+  }
+  return $block;
+}
+
+function angular_form_theme() {
+  return array(
+    'angular' => array(
+      'template' => 'angular_form_block',
+      'variables' => array(
+		'hide_value',
+      ),
+      
+    ),
+  );
+}
+
+
+
+
+/**
+ * Implements hook_preprocess_THEME(&$variables).
+ */
+function angular_form_preprocess_angular(&$variables) {
+  $module_path = drupal_get_path('module', 'angular_form');
+  drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js', 'external');
+  drupal_add_js($module_path . '/js/app.js');
+  // Variables para el archivo javascript.
+  $node = node_load(arg(1));
+  $valores = array();
+  $type = $node->type;
+  $valores['carrera'] = "0";
+  //dpm($node->nid);
+  switch($type){
+	  case 'complemento_carrera':
+		$uri = drupal_get_path_alias();
+    $nid = convierte_uri($uri);
+		$carr = getSectionCarreras($nid);
+    $item = getSectionCode($node->nid);
+    $valores['contexto'] = ($item != '') ? $item : $type;
+    $valores['carrera'] = $carr;
+		break;
+	  case 'admision':
+		$item = getSectionCode($node->nid);
+		$valores['contexto'] = ($item != '') ? $item : $type;
+		break;
+	  case 'complemento_admision':
+        $valores['contexto'] = getSectionCode($node->nid);
+        break;
+      case 'eventos':
+        $item = getSectionCode($node->nid);
+		$valores['contexto'] = ($item != '') ? $item : $type;
+        break;
+	default:
+		$uri = drupal_get_path_alias();
+		$uri = explode('/', $uri);
+		if ($uri[1] == 'calendario-de-eventos')
+		{
+			$valores['contexto'] = $uri[1];
+		} else {
+			$valores['contexto'] = $uri[0];
+		}
+		break;
+  }
+  drupal_add_js($valores, 'setting');
+  if (arg(0) == 'node' && is_numeric(arg(1)))
+  {
+	  drupal_add_js(['diplomado' => $uri[1]], 'setting');
+  }
+  else {
+	  drupal_add_js(['diplomado' => ""], 'setting');
+  }
+}
+
+
+
+function getSectionCarreras($nid = '')
+{
+   $carreras = array
+   (
+   		296=>'5',
+			1=>'4',
+			4=>'21',
+			14=> '16',
+			1251=> '35',
+			1250=>'36',
+			1249=>'37',
+			1227=>'38',
+			926=>'39',
+    );
+
+    return $carreras[$nid];
+}
+
+function convierte_uri($uri) {
+ $uri_array = explode('/', $uri);
+array_pop($uri_array);
+$new_uri = implode('/', $uri_array);
+
+if ($new_uri2 ==='facultades/facultad-diseno/diseno-grafico-publicitario'){
+    $nid[1]='16';
+    return $nid[1];
+  }
+
+else{
+  $new_uri2 = drupal_lookup_path('source',$new_uri);
+  $nid = explode('/', $new_uri2);
+  return $nid[1];
+}
+
+}
+
+function getSectionCode($param = '')
+{
+	$item = "";
+	$sections = array(
+      ['nid' => '5', 'name' => 'Admisión Extraordinaria', 'contentTitle' => '129'],
+      ['nid' => '4', 'name' => 'Admisión General', 'contentTitle' => 'xxxxx'],
+      ['nid' => '21', 'name' => 'ARQ 1/2/3', 'contentTitle' => 'xxxx'],
+
+      ['nid' => '7', 'name' => 'Beca Creativa', 'contentTitle' => '126'],
+      ['nid' => '14', 'name' => 'Café Creativo', 'contentTitle' => '443'],
+      ['nid' => '20', 'name' => 'Co-creando', 'contentTitle' => '777'], 
+      ['nid' => '25', 'name' => 'Comunica 1/2/3', 'contentTitle' => 'xxxxx'],
+      
+      //carrera de arquitectura
+      
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1164'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1123'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1137'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1146'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1245'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1173'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1182'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1254'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1330'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1338'],
+      ['nid' => '30', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1193'],
+      //carrera arquitectura de interiores//
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1195'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1166'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1122'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1139'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1148'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1104'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1175'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1253'],
+      ['nid' => '30', 'name' => 'Facultad de Arquitectura', 'contentTitle' => '1184'],
+
+      //Carrera de comunicación
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1194'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1165'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1321'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1147'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1138'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1103'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1174'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1255'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1376'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1332'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1339'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1183'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1035'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1034'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1033'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1030'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1029'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1028'],
+ 
+
+      //carrera de comunicación audiovisual y cine
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1191'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1163'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1322'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1136'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1145'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1101'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1172'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1181'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1342'],
+      //comunicacion-e-imagen-corporativa
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1226'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1161'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1324'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1134'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1143'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1099'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1170'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1179'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1346'],
+      //comunicación y publicidad transmedia
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1190'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1162'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1323'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1135'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1144'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1100'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1171'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1180'],
+      ['nid' => '31', 'name' => 'Facultad de Comunicación', 'contentTitle' => '1343'],
+
+      //diseño gráfico estratégico
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1168'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1188'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1177'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1344'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1167'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1119'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1140'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1149'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1105'],
+
+      //diseño gráfico publicitario
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1186'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1159'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1121'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1132'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1141'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1097'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1176'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1185'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1252'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1329'],
+      ['nid' => '32', 'name' => 'Facultad de Diseño Gráfico', 'contentTitle' => '1340'],
+
+      //marketing e innovación
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1187'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1160'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1120'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1133'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1142'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1098'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1169'],
+      ['nid' => '33', 'name' => 'Facultad de Negocios e Innovación', 'contentTitle' => '1345'],
+
+      
+     
+      ['nid' => '24', 'name' => 'Creative minds', 'contentTitle' => '935'], 
+      ['nid' => '24', 'name' => 'Creative minds', 'contentTitle' => '857'],      
+      ['nid' => '22', 'name' => 'Creative UP', 'contentTitle' => '848'],
+      ['nid' => '23', 'name' => 'DESIGN 1/2/3', 'contentTitle' => 'xxxxx'],
+
+      ['nid' => '19', 'name' => 'Diseño gráfico', 'contentTitle' => '5'],
+    /*  ['nid' => '41', 'name' => 'Educación Continua', 'contentTitle' => 'xxxxx'],*/
+      ['nid' => '2', 'name' => 'Evaluación de Alto Rendimiento', 'contentTitle' => '140'],
+      ['nid' => '1', 'name' => 'Examen de admisión', 'contentTitle' => '128'],
+      ['nid' => '9', 'name' => 'INaction Arquitectura', 'contentTitle' => '312'],
+      ['nid' => '9', 'name' => 'INaction Arquitectura', 'contentTitle' => '449'],
+      ['nid' => '10', 'name' => 'INaction Arquitectura de Interiores', 'contentTitle' => '258'],
+      ['nid' => '10', 'name' => 'INaction Arquitectura de Interiores', 'contentTitle' => '283'],
+      ['nid' => '11', 'name' => 'INaction Comunicacion', 'contentTitle' => '259'],
+      ['nid' => '11', 'name' => 'INaction Comunicacion', 'contentTitle' => '284'],
+      ['nid' => '12', 'name' => 'INaction Diseño Gráfico Publicitario', 'contentTitle' => '260'],
+      ['nid' => '12', 'name' => 'INaction Diseño Gráfico Publicitario', 'contentTitle' => '285'],
+      ['nid' => '27', 'name' => 'INaction Marketing e Innovación', 'contentTitle' => 'xxxxx'],
+      ['nid' => '441', 'name' => 'INaction', 'contentTitle' => '441'],      
+      ['nid' => '8', 'name' => 'Open Day', 'contentTitle' => '442'],
+      ['nid' => '8', 'name' => 'Open Day', 'contentTitle' => '286'],
+      ['nid' => '3', 'name' => 'Pre UCAL', 'contentTitle' => '127'],
+      ['nid' => '15', 'name' => 'Ruta Creativa', 'contentTitle' => 'xxxxx'],
+      ['nid' => '6', 'name' => 'Traslado Externo', 'contentTitle' => '141'],
+      ['nid' => '13', 'name' => 'Visita Guiada a UCAL', 'contentTitle' => '444'],
+      ['nid' => '125', 'name' => 'Como Postular', 'contentTitle' => '125'],
+      ['nid' => '440', 'name' => 'Participa de nuestros eventos', 'contentTitle' => '440'],
+      ['nid' => '955', 'name' => 'Continuidad UCAL – TLS', 'contentTitle' => '955'],//28
+    );
+    foreach ($sections as $section) {
+      if ($section['contentTitle'] == $param) {
+        $item = $section['nid'];
+      }
+    }
+    return $item;
+}
+
+/**
+ * Implements hook_preprocess_THEME(&$variables).
+ */
+/*function angular_form_preprocess_angular_bottom(&$variables) {
+  $module_path = drupal_get_path('module', 'angular_form');
+  //drupal_add_js('https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js', 'external');
+  drupal_add_js($module_path . '/js/app-bottom.js');
+}*/

@@ -1,0 +1,102 @@
+body.not-front .contenedor-principal .main-container .angform { 
+	margin-top: 20px; margin-bottom: 20px; }
+body.not-front .contenedor-principal .main-container .angform { 
+    padding: 10px 5px; }
+
+body.not-front .contenedor-principal .main-container .angform h3 {
+    color: white;
+    font-size: 21px;
+    line-height: 1;
+    margin: 10px 0 15px;
+    text-align: center;
+}
+body.not-front .contenedor-principal .main-container .angform select, 
+body.not-front .contenedor-principal .main-container .angform input {
+    -webkit-appearance: textfield; 
+    -ms-appearance: textfield;
+    appearance: textfield; 
+    -moz-appearance: textfield;
+    background: transparent none repeat scroll 0 0;
+    border: 1px solid white;
+    color: white;
+    float: left; height: auto; 
+    font-size: 14px;
+    margin: 5px 0 2px;
+    padding: 3px 5px;
+    width: 100%;
+     box-shadow: none;
+    outline: 0 none;
+}
+body.not-front .contenedor-principal .main-container .angform select {
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -ms-appearance: none; 
+     box-shadow: none;
+    outline: 0 none;
+    padding: 0 5px; 
+    text-indent: -2px;
+}
+body.not-front .contenedor-principal .main-container .ss .angform select { 
+	padding: 3px 5px}
+body.not-front .contenedor-principal .main-container .angform select:focus, 
+body.not-front .contenedor-principal .main-container .angform input:focus,
+body.not-front .contenedor-principal .main-container .angform select:hover, 
+body.not-front .contenedor-principal .main-container .angform input:hover { 
+	background: inherit; border-color: black; color: inherit; }
+
+body.not-front .contenedor-principal .main-container .angform .dob input {
+    width: 49.5%;
+}
+body.not-front .contenedor-principal .main-container .angform .dob input:last-child {
+    float: right;
+}
+
+/*PLACEHOLDER*/
+body.not-front .contenedor-principal .main-container .angform input::-moz-placeholder,
+body.not-front .contenedor-principal .main-container .angform input:-moz-placeholder {
+    color: white!important; opacity: 1!important }
+body.not-front .contenedor-principal .main-container .angform input::-webkit-input-placeholder {
+    color: white!important; opacity: 1!important }
+body.not-front .contenedor-principal .main-container .angform input:-ms-input-placeholder{
+    color: white!important; opacity: 1!important }
+
+body.not-front .contenedor-principal .main-container .angform .dob-sub { clear: left;
+    text-align: center; }
+body.not-front .contenedor-principal .main-container .angform .dob-sub button { 
+	background: black none repeat scroll 0 0;
+    border: 0 none;
+    color: white;
+    font-size: 14px;
+    line-height: 1;
+    margin: 5px 0 10px;
+    padding: 5px 12px; }
+body.not-front .contenedor-principal .main-container .angform .dob-sub button:hover { 
+	background: #9a9a9a; }
+
+body.not-front .contenedor-principal .main-container .angform .select-inner-custom {
+    border: 0 none;
+    height: auto;
+}
+body.not-front .contenedor-principal .main-container .angform .select-inner {
+    height: auto;
+    position: relative;
+    width: 100%;
+}
+
+@media(max-width: 1200px) {
+
+body.not-front .contenedor-principal .main-container .angform .dob input {
+    width: 100%;
+}
+body.not-front .contenedor-principal .main-container .angform .dob input:last-child {
+    float: left;
+}
+
+}
+/*
+@media(max-width: 991px) {
+
+.ss .region-solicita { display: none; }
+
+}*/
