@@ -1,6 +1,6 @@
 app = angular.module('ucalApp',[]);
 
-/** app.constant('form_instance','http://form.ucal.edu.pe/webservice'); */
+/** app.constant('form_instance','http://site.com/webservice'); */
 app.constant('form_instance','SERVICE');
 
 
